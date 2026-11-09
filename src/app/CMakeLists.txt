@@ -375,16 +375,15 @@ if (OS_IS_WIN)
 ###########################################
 elseif(OS_IS_LIN)
     # Preserve the legacy mscore command as an alias for existing scripts.
-    install(CODE "message(STATUS \"Creating symlink \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX} -> ${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")
-                  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\" \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX}\")")
+    install(CODE "message(STATUS \"Creating legacy mscore alias\")
+                  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/nzumari-studio${MUSE_APP_INSTALL_SUFFIX}\" \"\\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")")
 
 ###########################################
 # FreeBSD
 ###########################################
 elseif(OS_IS_FBSD)
-    # Install mscore executable (package maintainers may add "MuseScore" and/or "musescore" aliases that symlink to mscore)
-    install(CODE "message(STATUS \"Creating symlink \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX} -> ${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")
-                  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\" \"${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX}\")")
+    # Preserve the legacy mscore command as an alias for existing scripts.
+    install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/nzumari-studio${MUSE_APP_INSTALL_SUFFIX}\" \"${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")")
 
 ###########################################
 # macOS
