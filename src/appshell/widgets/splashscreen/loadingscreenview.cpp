@@ -37,12 +37,12 @@ static const QString imagePath(":/resources/LoadingScreen.svg");
 
 static constexpr QSize loadingScreenSize(800, 380);
 
-static const QColor messageColor("#F1F1EE");
+static const QColor messageColor("#F4F0E6");
 
-static const QString website("www.musescore.org");
+static const QString website("Nzumari Studio");
 static constexpr QRectF websiteRect(loadingScreenSize.width() - 48, loadingScreenSize.height() - 48, 0, 0);
 
-static const QColor versionNumberColor("#19F3FF");
+static const QColor versionNumberColor("#C6A66B");
 static constexpr qreal versionNumberSpacing = 5.0;
 
 LoadingScreenView::LoadingScreenView(QWidget* parent)
