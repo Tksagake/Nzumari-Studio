@@ -57,9 +57,9 @@ if (OS_IS_WIN)
     # the generated icon consistently from their respective working folders.
     set(WINDOWS_ICONS_RC "${PROJECT_BINARY_DIR}/nzumari_windows_icons.rc")
     file(WRITE "${WINDOWS_ICONS_RC}"
-        "IDI_ICON1 ICON DISCARDABLE \"${NZUMARI_WINDOWS_ICON_FILE}\"\\n"
-        "IDI_ICON2 ICON DISCARDABLE \"${PROJECT_SOURCE_DIR}/share/icons/MsczIcon/MS4_MsczIcon.ico\"\\n"
-        "IDI_ICON3 ICON DISCARDABLE \"${PROJECT_SOURCE_DIR}/share/icons/MscxIcon/MS4_MscxIcon.ico\"\\n"
+        "IDI_ICON1 ICON DISCARDABLE \"${NZUMARI_WINDOWS_ICON_FILE}\"\n"
+        "IDI_ICON2 ICON DISCARDABLE \"${PROJECT_SOURCE_DIR}/share/icons/MsczIcon/MS4_MsczIcon.ico\"\n"
+        "IDI_ICON3 ICON DISCARDABLE \"${PROJECT_SOURCE_DIR}/share/icons/MscxIcon/MS4_MscxIcon.ico\"\n"
     )
 
     if (CC_IS_MSVC)
