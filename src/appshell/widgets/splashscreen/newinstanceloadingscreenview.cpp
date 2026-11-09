@@ -71,7 +71,7 @@ void NewInstanceLoadingScreenView::draw(QPainter* painter)
     painter->setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
 
     // Draw background
-    QString bgColorStr = "#00081C";
+    QString bgColorStr = "#17241F";
     painter->fillRect(0, 0, width(), height(), QColor(bgColorStr));
 
     // Draw message
@@ -79,7 +79,7 @@ void NewInstanceLoadingScreenView::draw(QPainter* painter)
     font.setBold(true);
     painter->setFont(font);
 
-    QString messageColorStr = "#F1F1EE";
+    QString messageColorStr = "#F4F0E6";
     QPen pen(messageColorStr);
     painter->setPen(pen);
 
