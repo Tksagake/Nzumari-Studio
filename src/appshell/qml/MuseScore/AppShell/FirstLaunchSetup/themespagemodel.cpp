@@ -148,6 +148,14 @@ QStringList ThemesPageModel::accentColors() const
 
     // Keep the Nzumari brand palette available in the native accent picker.
     const QStringList brandColors {
+        // Exact sRGB mappings of the Nzumari web theme's OKLCH tokens.
+        QStringLiteral("#205335"), // forest / light primary
+        QStringLiteral("#C09337"), // gold
+        QStringLiteral("#883839"), // burgundy
+        QStringLiteral("#83A683"), // sage
+        QStringLiteral("#9EC39E"), // dark primary
+        QStringLiteral("#D7A94F"), // dark gold
+        // Original supplied identity colors remain available as accents.
         QStringLiteral("#173B30"),
         QStringLiteral("#C6A66B"),
         QStringLiteral("#702F3B")
