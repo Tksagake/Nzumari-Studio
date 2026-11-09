@@ -89,6 +89,8 @@ qt_add_qml_module(appshell_qml
         FirstLaunchSetup/resources/MuseSounds.png
         FirstLaunchSetup/resources/VideoTutorials.png
         resources/mu_logo.svg
+        resources/nzumari-icon.svg
+        resources/nzumari-wordmark.svg
     IMPORTS
         TARGET muse_ui_qml
         TARGET muse_uicomponents_qml

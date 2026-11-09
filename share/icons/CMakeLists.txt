@@ -41,11 +41,10 @@ elseif(OS_IS_WIN)
     endif()
 
 elseif(OS_IS_LIN)
-    foreach(SIZE 16 24 32 48 64 96 128 512)
-        install(FILES AppIcon/MS4_AppIcon_${SIZE}x${SIZE}.png 
-                RENAME mscore${MUSE_APP_INSTALL_SUFFIX}.png 
-                DESTINATION share/icons/hicolor/${SIZE}x${SIZE}/apps)
-    endforeach()
+    # Install the official Nzumari vector mark as the scalable application icon.
+    install(FILES ${PROJECT_SOURCE_DIR}/resources/branding/nzumari-icon.svg
+            RENAME nzumari-studio${MUSE_APP_INSTALL_SUFFIX}.svg
+            DESTINATION share/icons/hicolor/scalable/apps)
 
     install(FILES MsczIcon/MS4_MsczIcon_512x512.png 
             RENAME application-x-musescore${MUSE_APP_INSTALL_SUFFIX}.png

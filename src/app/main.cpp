@@ -23,6 +23,7 @@
 #include <csignal>
 
 #include <QApplication>
+#include <QIcon>
 #include <QStyleHints>
 #include <QQuickWindow>
 #include <QSslSocket>
@@ -125,8 +126,8 @@ int main(int argc, char** argv)
 #else
     QCoreApplication::setApplicationName(MUSE_APP_NAME_MACHINE_READABLE MUSE_APP_VERSION_MAJOR);
 #endif
-    QCoreApplication::setOrganizationName("MuseScore");
-    QCoreApplication::setOrganizationDomain("musescore.org");
+    QCoreApplication::setOrganizationName("Vivace Music Consultancy");
+    QCoreApplication::setOrganizationDomain("vivaceke.co.ke");
     QCoreApplication::setApplicationVersion(MUSE_APP_VERSION);
 
 #if !defined(Q_OS_WIN) && !defined(Q_OS_DARWIN) && !defined(Q_OS_WASM)
@@ -179,6 +180,12 @@ int main(int argc, char** argv)
     std::shared_ptr<MuseScoreCmdOptions> opt = std::make_shared<MuseScoreCmdOptions>();
     opt->runMode = IApplication::RunMode::GuiApp;
 #endif
+
+    // Apply the Nzumari application icon after the GUI application exists.
+    // Audio-plugin registration uses QCoreApplication and has no window.
+    if (qapp->inherits("QGuiApplication")) {
+        QGuiApplication::setWindowIcon(QIcon(":/resources/nzumari-icon.svg"));
+    }
 
     // ====================================================
     // Setup application

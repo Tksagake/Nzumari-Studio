@@ -22,7 +22,7 @@
 # Setup main application
 ###########################################
 
-set(EXECUTABLE_NAME mscore)
+set(EXECUTABLE_NAME nzumari-studio)
 
 ###########################################
 # Platform specific
@@ -32,19 +32,48 @@ if (OS_IS_WIN)
     set(EXECUTABLE_NAME ${MUSE_APP_NAME_MACHINE_READABLE}${MUSE_APP_VERSION_MAJOR})
 
     include(GetCompilerInfo)
+    find_package(Qt6 REQUIRED COMPONENTS Gui Svg)
+
+    # Generate a multi-resolution ICO from the official vector mark. This keeps
+    # the Windows executable resource icon in sync with the source brand artwork.
+    add_executable(nzumari_icon_generator EXCLUDE_FROM_ALL
+        ${PROJECT_SOURCE_DIR}/buildscripts/branding/generate_windows_icon.cpp
+    )
+    target_link_libraries(nzumari_icon_generator PRIVATE Qt6::Gui Qt6::Svg)
+
+    set(NZUMARI_WINDOWS_ICON_FILE "${PROJECT_BINARY_DIR}/NzumariStudio.ico")
+    add_custom_command(
+        OUTPUT ${NZUMARI_WINDOWS_ICON_FILE}
+        COMMAND $<TARGET_FILE:nzumari_icon_generator>
+            "${PROJECT_SOURCE_DIR}/resources/branding/nzumari-icon.svg"
+            "${NZUMARI_WINDOWS_ICON_FILE}"
+        DEPENDS nzumari_icon_generator
+            ${PROJECT_SOURCE_DIR}/resources/branding/nzumari-icon.svg
+        VERBATIM
+    )
+    add_custom_target(nzumari_windows_icon DEPENDS ${NZUMARI_WINDOWS_ICON_FILE})
+
+    # Use absolute paths so both MSVC's resource compiler and windres resolve
+    # the generated icon consistently from their respective working folders.
+    set(WINDOWS_ICONS_RC "${PROJECT_BINARY_DIR}/nzumari_windows_icons.rc")
+    file(WRITE "${WINDOWS_ICONS_RC}"
+        "IDI_ICON1 ICON DISCARDABLE \"${NZUMARI_WINDOWS_ICON_FILE}\"\n"
+        "IDI_ICON2 ICON DISCARDABLE \"${PROJECT_SOURCE_DIR}/share/icons/MsczIcon/MS4_MsczIcon.ico\"\n"
+        "IDI_ICON3 ICON DISCARDABLE \"${PROJECT_SOURCE_DIR}/share/icons/MscxIcon/MS4_MscxIcon.ico\"\n"
+    )
 
     if (CC_IS_MSVC)
-        # MSVC recognizes a *.rc file and will invoke the resource compiler to link it
-        set(WINDOWS_ICONS_RC ${PROJECT_SOURCE_DIR}/share/icons/windows_icons.rc)
+        # MSVC recognizes a *.rc file and will invoke the resource compiler to link it.
     elseif(CC_IS_MINGW)
-        set(WINDOWS_ICONS_RC ${PROJECT_BINARY_DIR}/windows_icons_rc.o)
+        set(WINDOWS_ICONS_RC_OBJECT "${PROJECT_BINARY_DIR}/windows_icons_rc.o")
         add_custom_command(
-            OUTPUT ${PROJECT_BINARY_DIR}/windows_icons_rc.o
-            COMMAND ${CMAKE_RC_COMPILER} -i windows_icons.rc -o ${PROJECT_BINARY_DIR}/windows_icons_rc.o
-            DEPENDS ${PROJECT_SOURCE_DIR}/share/icons/windows_icons.rc
-            WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}/share/icons
-            )
-        set_source_files_properties(${PROJECT_BINARY_DIR}/windows_icons_rc.o PROPERTIES generated true)
+            OUTPUT ${WINDOWS_ICONS_RC_OBJECT}
+            COMMAND ${CMAKE_RC_COMPILER} -i "${WINDOWS_ICONS_RC}" -o ${WINDOWS_ICONS_RC_OBJECT}
+            DEPENDS ${WINDOWS_ICONS_RC} ${NZUMARI_WINDOWS_ICON_FILE}
+            WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+        )
+        set(WINDOWS_ICONS_RC ${WINDOWS_ICONS_RC_OBJECT})
+        set_source_files_properties(${WINDOWS_ICONS_RC} PROPERTIES generated true)
     endif()
 
 elseif(OS_IS_LIN)
@@ -76,7 +105,7 @@ elseif(OS_IS_MAC)
 
 elseif(OS_IS_WASM)
 
-    set(EXECUTABLE_NAME MuseScoreStudio)
+    set(EXECUTABLE_NAME NzumariStudio)
 
 elseif(OS_IS_FBSD)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L /usr/local/lib -lasound -lpthread")
@@ -238,6 +267,10 @@ qt_add_executable(MuseScoreStudio
     ${APP_SRC}
 )
 
+if (OS_IS_WIN)
+    add_dependencies(MuseScoreStudio nzumari_windows_icon)
+endif()
+
 ###########################################
 # Setting target properties
 ###########################################
@@ -374,17 +407,16 @@ if (OS_IS_WIN)
 # Linux
 ###########################################
 elseif(OS_IS_LIN)
-    # Install mscore executable (package maintainers may add "MuseScore" and/or "musescore" aliases that symlink to mscore)
-    install(CODE "message(STATUS \"Creating symlink \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX} -> ${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")
-                  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\" \"\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX}\")")
+    # Preserve the legacy mscore command as an alias for existing scripts.
+    install(CODE "message(STATUS \"Creating legacy mscore alias\")
+                  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/nzumari-studio${MUSE_APP_INSTALL_SUFFIX}\" \"\\$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")")
 
 ###########################################
 # FreeBSD
 ###########################################
 elseif(OS_IS_FBSD)
-    # Install mscore executable (package maintainers may add "MuseScore" and/or "musescore" aliases that symlink to mscore)
-    install(CODE "message(STATUS \"Creating symlink \$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX} -> ${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")
-                  execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\" \"${CMAKE_INSTALL_PREFIX}/bin/musescore${MUSE_APP_INSTALL_SUFFIX}\")")
+    # Preserve the legacy mscore command as an alias for existing scripts.
+    install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink \"${CMAKE_INSTALL_PREFIX}/bin/nzumari-studio${MUSE_APP_INSTALL_SUFFIX}\" \"${CMAKE_INSTALL_PREFIX}/bin/mscore${MUSE_APP_INSTALL_SUFFIX}\")")
 
 ###########################################
 # macOS

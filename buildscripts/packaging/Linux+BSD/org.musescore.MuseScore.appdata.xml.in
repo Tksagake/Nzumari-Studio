@@ -12,11 +12,11 @@
     <id>org.musescore.MuseScore@MUSE_APP_INSTALL_SUFFIX@</id>
     <metadata_license>CC0-1.0</metadata_license><!-- License of this file -->
     <project_license>GPL-3.0-only</project_license>
-    <name>MuseScore</name>
-    <summary>Create, play and print beautiful sheet music</summary>
+    <name>Nzumari Studio</name>
+    <summary>Compose, arrange, play and preserve music</summary>
     <description>
-        <p>MuseScore is cross-platform, multi-lingual, open source music notation software. It features an easy to use WYSIWYG editor with audio score playback for results that look and sound beautiful. It supports unlimited staves with up to four voices each, dynamics, articulations, lyrics, chords, lead sheet notation, import/export of MIDI and MusicXML, export to PDF and WAV, plus online score sharing.</p>
-        <p>MuseScore can upload scores directly to the score sharing site musescore.com. Program support is provided on musescore.org.</p>
+        <p>Nzumari Studio is a cross-platform music composition environment built on the MuseScore Studio notation and engraving codebase. It provides a visual score editor, audio playback, engraving, and professional music import and export workflows.</p>
+        <p>Nzumari Studio is developed by Vivace Music Consultancy and is published under the GNU General Public License version 3.</p>
         <p>Features supported by MuseScore include:</p>
         <ul>
             <li>Unlimited score length</li>
@@ -40,7 +40,7 @@
             <li>Additive time signatures</li>
             <li>User-defined score styles</li>
         </ul>
-        <p>Most elements in MuseScore are laid out automatically but can also be positioned manually. The capabilities of MuseScore can be extended via plugins, and the growing repository on musescore.org contains many plugins submitted by users.</p>
+        <p>Score elements are laid out automatically and can also be positioned manually. The application supports extensions and a wide range of notation workflows.</p>
         <p>MuseScore includes a set of sounds that reproduce common instruments (as defined by General MIDI) without taking up a lot of disk space or memory, but you can also substitute any SoundFont you prefer for a wider variety of sounds or for more realism.</p>
         <p>MuseScore can import and export MIDI and MusicXML files, and it can also import from Capella and several other programs. MuseScore can export to PDF, PNG, and other graphic formats, to WAV and other audio formats, or to Lilypond for an alternative layout and print option.</p>
     </description>
@@ -70,7 +70,7 @@
         <internet>always</internet>
     </supports>
     <developer id="org.musescore">
-        <name>MuseScore Limited</name>
+        <name>Vivace Music Consultancy</name>
     </developer>
     <screenshots>
         <screenshot type="default">
