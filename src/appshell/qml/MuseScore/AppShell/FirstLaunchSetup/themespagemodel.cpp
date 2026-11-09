@@ -150,8 +150,7 @@ QStringList ThemesPageModel::accentColors() const
     const QStringList brandColors {
         QStringLiteral("#173B30"),
         QStringLiteral("#C6A66B"),
-        QStringLiteral("#702F3B"),
-        QStringLiteral("#8FA58F")
+        QStringLiteral("#702F3B")
     };
 
     for (const QString& color : brandColors) {
