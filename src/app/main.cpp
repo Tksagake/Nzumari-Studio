@@ -169,12 +169,6 @@ int main(int argc, char** argv)
 
     fixSslBackend();
 
-    // Apply the Nzumari application icon only after the GUI application
-    // instance exists. Audio-plugin registration uses QCoreApplication.
-    if (qapp->inherits("QGuiApplication")) {
-        QGuiApplication::setWindowIcon(QIcon(":/resources/nzumari-icon.svg"));
-    }
-
     commandLineParser.processBuiltinArgs(*qapp);
     std::shared_ptr<MuseScoreCmdOptions> opt = commandLineParser.options();
 
@@ -186,6 +180,12 @@ int main(int argc, char** argv)
     std::shared_ptr<MuseScoreCmdOptions> opt = std::make_shared<MuseScoreCmdOptions>();
     opt->runMode = IApplication::RunMode::GuiApp;
 #endif
+
+    // Apply the Nzumari application icon after the GUI application exists.
+    // Audio-plugin registration uses QCoreApplication and has no window.
+    if (qapp->inherits("QGuiApplication")) {
+        QGuiApplication::setWindowIcon(QIcon(":/resources/nzumari-icon.svg"));
+    }
 
     // ====================================================
     // Setup application
