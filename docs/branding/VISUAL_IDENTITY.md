@@ -11,13 +11,20 @@ This file records the desktop application's first-party brand implementation. Th
 
 ## Colour system
 
+The supplied identity artwork and the web application's CSS theme use related but distinct values. Preserve both rather than forcing the SVG artwork to match interface colours.
+
+**Official identity palette**
+
 | Token | Hex | Role |
 |---|---|---|
-| Forest | `#173B30` | Primary brand, deep structural surfaces |
-| Warm ivory | `#F4F0E6` | Main light surface |
-| Brass | `#C6A66B` | Primary accent, focus and selected details |
-| Burgundy | `#702F3B` | Secondary accent and deliberate emphasis |
-| Sage | `#A4B9A3` | Secondary green, subdued states |
+| Forest | `#173B30` | Primary identity colour |
+| Warm ivory | `#F4F0E6` | Brand neutral |
+| Brass | `#C6A66B` | Brand accent |
+| Burgundy | `#702F3B` | Secondary identity accent |
+
+**Native interface palette**
+
+The Qt light and dark configurations map the OKLCH tokens in the supplied `notasili.css` theme to sRGB values. Key mappings include light surfaces `#FCFAF6` / `#EAF1EA`, light forest `#205335`, gold `#C09337`, burgundy `#883839`, sage `#83A683`, dark surfaces `#121914` / `#242E27`, and dark primary `#9EC39E` with gold `#D7A94F`.
 
 The official icon also contains its own tonal gradients. Do not flatten, recolour, redraw or substitute the icon artwork.
 
