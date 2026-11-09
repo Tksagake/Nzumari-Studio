@@ -43,7 +43,7 @@ elseif(OS_IS_WIN)
 elseif(OS_IS_LIN)
     foreach(SIZE 16 24 32 48 64 96 128 512)
         install(FILES AppIcon/MS4_AppIcon_${SIZE}x${SIZE}.png 
-                RENAME mscore${MUSE_APP_INSTALL_SUFFIX}.png 
+                RENAME nzumari-studio${MUSE_APP_INSTALL_SUFFIX}.png 
                 DESTINATION share/icons/hicolor/${SIZE}x${SIZE}/apps)
     endforeach()
 
