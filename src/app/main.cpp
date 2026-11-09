@@ -135,7 +135,7 @@ int main(int argc, char** argv)
 #ifndef MUSE_APP_INSTALL_SUFFIX
 #define MUSE_APP_INSTALL_SUFFIX ""
 #endif
-    QGuiApplication::setDesktopFileName("ke.co.vivace.nzumari.studio" MUSE_APP_INSTALL_SUFFIX);
+    QGuiApplication::setDesktopFileName("org.musescore.MuseScore" MUSE_APP_INSTALL_SUFFIX);
 #endif
 
     if (qapp->inherits("QGuiApplication")) {
