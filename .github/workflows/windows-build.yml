@@ -63,7 +63,7 @@ jobs:
           $archive = Join-Path $env:RUNNER_TEMP "musescore-dependencies.7z"
           Invoke-WebRequest -Uri "https://s3.amazonaws.com/utils.musescore.org/dependencies.7z" -OutFile $archive
           $sevenZip = (Get-Command 7z -ErrorAction SilentlyContinue).Source
-          if (-not $sevenZip) { $sevenZip = Join-Path $env:ProgramFiles "7-Zip\\7z.exe" }
+          if (-not $sevenZip) { $sevenZip = Join-Path $env:ProgramFiles "7-Zip\7z.exe" }
           if (-not (Test-Path $sevenZip)) { throw "7-Zip executable was not found" }
           & $sevenZip x $archive "-o$env:GITHUB_WORKSPACE" -y
           if ($LASTEXITCODE -ne 0) { throw "Could not extract MuseScore dependencies archive" }
