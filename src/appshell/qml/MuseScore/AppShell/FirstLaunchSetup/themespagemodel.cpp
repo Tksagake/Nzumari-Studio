@@ -144,7 +144,23 @@ void ThemesPageModel::setCurrentThemeCode(const QString& themeCode)
 
 QStringList ThemesPageModel::accentColors() const
 {
-    return uiConfiguration()->possibleAccentColors();
+    QStringList colors = uiConfiguration()->possibleAccentColors();
+
+    // Keep the Nzumari brand palette available in the native accent picker.
+    const QStringList brandColors {
+        QStringLiteral("#173B30"),
+        QStringLiteral("#C6A66B"),
+        QStringLiteral("#702F3B"),
+        QStringLiteral("#8FA58F")
+    };
+
+    for (const QString& color : brandColors) {
+        if (!colors.contains(color, Qt::CaseInsensitive)) {
+            colors.prepend(color);
+        }
+    }
+
+    return colors;
 }
 
 int ThemesPageModel::currentAccentColorIndex() const
