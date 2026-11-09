@@ -23,6 +23,7 @@
 #include <csignal>
 
 #include <QApplication>
+#include <QIcon>
 #include <QStyleHints>
 #include <QQuickWindow>
 #include <QSslSocket>
@@ -136,6 +137,10 @@ int main(int argc, char** argv)
 #endif
     QGuiApplication::setDesktopFileName("ke.co.vivace.nzumari.studio" MUSE_APP_INSTALL_SUFFIX);
 #endif
+
+    if (qapp->inherits("QGuiApplication")) {
+        QGuiApplication::setWindowIcon(QIcon(":/resources/nzumari-icon.svg"));
+    }
 
     using namespace muse;
     using namespace mu::app;
