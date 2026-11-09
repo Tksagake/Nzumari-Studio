@@ -76,7 +76,7 @@ elseif(OS_IS_MAC)
 
 elseif(OS_IS_WASM)
 
-    set(EXECUTABLE_NAME MuseScoreStudio)
+    set(EXECUTABLE_NAME NzumariStudio)
 
 elseif(OS_IS_FBSD)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -L /usr/local/lib -lasound -lpthread")
