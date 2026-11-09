@@ -82,7 +82,7 @@ FocusScope {
 
         anchors.fill: parent
 
-        color: ui.theme.backgroundSecondaryColor
+        color: ui.theme.backgroundPrimaryColor
     }
 
     RowLayout {
@@ -110,7 +110,7 @@ FocusScope {
             id: pageTitle
             Layout.fillWidth: true
 
-            text: qsTrc("project", "Scores")
+            text: qsTrc("project", "Your compositions")
             font: ui.theme.titleBoldFont
             horizontalAlignment: Text.AlignLeft
         }
@@ -169,7 +169,7 @@ FocusScope {
             }
 
             StyledTabButton {
-                text: qsTrc("project", "New & recent")
+                text: qsTrc("project", "Recent work")
 
                 navigation.name: "NewAndRecent"
                 navigation.panel: navTabPanel
@@ -177,7 +177,7 @@ FocusScope {
             }
 
             StyledTabButton {
-                text: qsTrc("project", "My online scores")
+                text: qsTrc("project", "Online compositions")
 
                 navigation.name: "MyOnlineScores"
                 navigation.panel: navTabPanel
@@ -351,7 +351,7 @@ FocusScope {
         height: 100
         width: parent.width
 
-        color: ui.theme.backgroundSecondaryColor
+        color: ui.theme.backgroundPrimaryColor
 
         NavigationPanel {
             id: navBottomPanel
@@ -374,7 +374,7 @@ FocusScope {
             navigation.column: 1
 
             minWidth: 216
-            text: qsTrc("project", "Score manager (online)")
+            text: qsTrc("project", "Open online library")
 
             onClicked: {
                 scoresPageModel.openScoreManager()
@@ -393,7 +393,7 @@ FocusScope {
                 navigation.panel: navBottomPanel
                 navigation.column: 2
 
-                text: qsTrc("project", "New")
+                text: qsTrc("project", "New composition")
                 accentButton: true
 
                 onClicked: {
