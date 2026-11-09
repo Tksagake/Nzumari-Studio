@@ -1,0 +1,125 @@
+name: Nzumari Studio — Windows x64
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - nzumari/architecture-foundation
+    paths:
+      - '**'
+      - '.github/workflows/windows-build.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nzumari-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  build-windows:
+    name: Build Windows x64 (MSVC 2022)
+    runs-on: windows-2022
+    timeout-minutes: 360
+
+    env:
+      QTDIR: C:\\Qt\\6.10.2\\msvc2022_64
+      MUSE_APP_BUILD_MODE: dev
+      MUSESCORE_BUILD_CONFIGURATION: app
+      MUSE_COMPILE_USE_UNITY: ON
+      MUSE_COMPILE_USE_COMPILER_CACHE: OFF
+
+    steps:
+      - name: Check out Nzumari Studio and submodules
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Enable long paths
+        shell: pwsh
+        run: git config --global core.longpaths true
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Qt 6.10.2 MSVC 2022 kit
+        shell: pwsh
+        run: |
+          python -m pip install --upgrade pip aqtinstall
+          python -m aqt install-qt windows desktop 6.10.2 win64_msvc2022_64 --modules qtshadertools qt5compat qtnetworkauth qtscxml --outputdir C:\\Qt
+          if (-not (Test-Path "$env:QTDIR\\bin\\qmake.exe")) {
+            throw "Qt installation did not produce qmake.exe at $env:QTDIR"
+          }
+          "QTDIR=$env:QTDIR" | Out-File -FilePath $env:GITHUB_ENV -Append
+          "$env:QTDIR\\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Install MuseScore Windows dependencies
+        shell: pwsh
+        run: |
+          choco install 7zip --no-progress -y
+          $archive = Join-Path $env:RUNNER_TEMP "musescore-dependencies.7z"
+          Invoke-WebRequest -Uri "https://s3.amazonaws.com/utils.musescore.org/dependencies.7z" -OutFile $archive
+          & 7z x $archive "-o$env:GITHUB_WORKSPACE" -y
+          if ($LASTEXITCODE -ne 0) { throw "Could not extract MuseScore dependencies archive" }
+          if (-not (Test-Path "$env:GITHUB_WORKSPACE\\dependencies\\libx64")) {
+            throw "Expected dependencies\\libx64 was not found after extraction"
+          }
+          "$env:GITHUB_WORKSPACE\\dependencies\\libx64" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Verify toolchain
+        shell: pwsh
+        run: |
+          cmake --version
+          & "$env:QTDIR\\bin\\qmake.exe" --version
+          if (-not (Test-Path "muse\\framework")) { throw "Muse framework submodule is missing" }
+          if (-not (Test-Path "muse_deps\\buildtools\\manifest.cmake")) { throw "muse_deps submodule is missing" }
+
+      - name: Configure, compile and install Nzumari Studio
+        shell: pwsh
+        run: |
+          # Keep parallelism conservative on the standard GitHub-hosted Windows runner.
+          Set-Content -Path build_overrides.cmake -Value "set(CPUS 2)"
+          cmake -P build.cmake install -DCMAKE_BUILD_TYPE=Release -DMUE_RUN_WINDEPLOYQT=ON
+          if ($LASTEXITCODE -ne 0) { throw "Nzumari Studio build/install failed" }
+
+      - name: Assemble portable ZIP
+        shell: pwsh
+        run: |
+          $install = Get-ChildItem -Path builds -Directory |
+            ForEach-Object { Join-Path $_.FullName "install" } |
+            Where-Object { Test-Path $_ } |
+            Select-Object -First 1
+          if (-not $install) { throw "CMake install directory was not found" }
+          $executables = Get-ChildItem -Path $install -Recurse -Filter *.exe
+          if (-not $executables) { throw "No Windows executable was found in the install tree" }
+          $executables | ForEach-Object { Write-Host "Executable: $($_.FullName)" }
+          @(
+            "Nzumari Studio 5.0.0 — Windows x64"
+            "Unofficial development build generated from $env:GITHUB_SHA"
+            "Extract this ZIP and launch the Nzumari Studio executable in the bin folder."
+          ) | Set-Content -Path (Join-Path $install "NZUMARI-BUILD-INFO.txt")
+          Compress-Archive -Path "$install\\*" -DestinationPath "$env:GITHUB_WORKSPACE\\Nzumari-Studio-Windows-x64.zip" -CompressionLevel Optimal -Force
+
+      - name: Upload Windows portable build
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nzumari-Studio-Windows-x64
+          path: Nzumari-Studio-Windows-x64.zip
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload CMake build diagnostics on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Nzumari-Windows-build-diagnostics
+          path: |
+            builds/**/CMakeCache.txt
+            builds/**/*.log
+            CMakeFiles/CMakeOutput.log
+            CMakeFiles/CMakeError.log
+          if-no-files-found: ignore
+          retention-days: 7
