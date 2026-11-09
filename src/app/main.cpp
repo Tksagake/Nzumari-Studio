@@ -138,10 +138,6 @@ int main(int argc, char** argv)
     QGuiApplication::setDesktopFileName("org.musescore.MuseScore" MUSE_APP_INSTALL_SUFFIX);
 #endif
 
-    if (qapp->inherits("QGuiApplication")) {
-        QGuiApplication::setWindowIcon(QIcon(":/resources/nzumari-icon.svg"));
-    }
-
     using namespace muse;
     using namespace mu::app;
 
@@ -172,6 +168,12 @@ int main(int argc, char** argv)
     }
 
     fixSslBackend();
+
+    // Apply the Nzumari application icon only after the GUI application
+    // instance exists. Audio-plugin registration uses QCoreApplication.
+    if (qapp->inherits("QGuiApplication")) {
+        QGuiApplication::setWindowIcon(QIcon(":/resources/nzumari-icon.svg"));
+    }
 
     commandLineParser.processBuiltinArgs(*qapp);
     std::shared_ptr<MuseScoreCmdOptions> opt = commandLineParser.options();
