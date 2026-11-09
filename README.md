@@ -1,95 +1,78 @@
-# ![MuseScore Studio](share/icons/musescore_logo_full.png)
+# Nzumari Studio
 
-Music notation and composition software
+**Compose · Preserve · Evolve · Distribute**
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![Coverage](https://musescore.github.io/mss_code_coverage/badge/coverage_badge.svg)](https://musescore.github.io/mss_code_coverage/)
+Nzumari Studio is an open-source music notation and composition application built on the MuseScore Studio codebase and developed by Vivace Music Consultancy.
 
-MuseScore Studio is an open source and free music notation software. For support, contribution, and bug reports visit MuseScore.org. Fork and make pull requests!
+The project is being developed as a Nzumari-branded desktop composition environment while retaining MuseScore's established notation workspace, engraving engine and core composition capabilities.
+
+## Current development status
+
+The active Nzumari desktop identity and native theme work is on the [nzumari/architecture-foundation branch](https://github.com/Tksagake/Nzumari-Studio/tree/nzumari/architecture-foundation), with implementation tracked in [Pull Request #1](https://github.com/Tksagake/Nzumari-Studio/pull/1).
+
+This repository is an active source-code fork. **The branch download is source code, not a ready-to-run Windows installer.** A native Windows build must complete before an Nzumari executable or installer can be distributed. Platform builds and packaging are not yet verified.
 
 ## Features
 
-- WYSIWYG design, notes are entered on a "virtual notepaper"
-- TrueType font(s) for printing & display allows for high quality scaling to all sizes
-- Easy & fast note entry
-- Many editing functions
-- MusicXML import/export
-- MIDI (SMF) import/export
-- MEI import/export
-- MuseData import
+Nzumari Studio retains the core MuseScore Studio capabilities, including:
+
+- WYSIWYG music notation and score editing
+- Note entry and comprehensive score-editing tools
+- High-quality music engraving and printing
+- MusicXML import and export
+- MIDI import and export
+- MEI import and export
 - MIDI input for note entry
-- Integrated sequencer and software synthesizer to play the score
-- Print or create PDF files
+- Integrated playback using the application's synthesizer
+- PDF export and printing
 
-## More info
+## Get the source
 
-- [MuseScore Studio Homepage](https://musescore.org)
-- [MuseScore Studio Git workflow instructions](https://musescore.org/en/developers-handbook/git-workflow)
-- [How to compile MuseScore Studio?](https://github.com/musescore/MuseScore/wiki/Set-up-developer-environment)
+Git is sufficient to clone the active Nzumari development branch. From PowerShell:
+
+```powershell
+git clone --recurse-submodules --branch nzumari/architecture-foundation https://github.com/Tksagake/Nzumari-Studio.git
+cd Nzumari-Studio
+```
+
+The `--recurse-submodules` option checks out the framework submodule required by the project.
+
+To update an existing checkout:
+
+```powershell
+git switch nzumari/architecture-foundation
+git pull
+git submodule update --init --recursive
+```
+
+## Building on Windows
+
+VS Code is an editor; Python and Node.js are useful development tools, but they do not provide the native C++ compiler or Qt libraries needed to build MuseScore Studio.
+
+A Windows desktop build requires a compatible Microsoft C++ toolchain (MSVC), the matching Qt 6 development packages, CMake, and the other dependencies specified by the upstream build system. Do not install arbitrary Qt or compiler versions: use the versions supported by the checked-out MuseScore codebase.
+
+Start with the upstream [developer environment setup](https://github.com/musescore/MuseScore/wiki/Set-up-developer-environment) and [Windows compilation guidance](https://github.com/musescore/MuseScore/wiki/Compiling-in-other-IDEs). The standard release build entry point used by this codebase is:
+
+```powershell
+cmake -P build.cmake -DCMAKE_BUILD_TYPE=Release
+```
+
+To run the compiled application:
+
+```powershell
+cmake -P build.cmake -DCMAKE_BUILD_TYPE=Release run
+```
+
+A full native build can require substantial RAM, disk space and build time. A GitHub Actions Windows build that publishes downloadable artifacts is a practical alternative to compiling on a modest development PC. No downloadable Nzumari Windows installer is currently published.
+
+## Upstream project and attribution
+
+Nzumari Studio is derived from [MuseScore Studio](https://github.com/musescore/MuseScore). The upstream project supplies the notation engine and much of the desktop application architecture. This fork retains the upstream licensing and attribution obligations.
+
+- [MuseScore Studio developer documentation](https://musescore.org/en/handbook/developers-handbook)
+- [MuseScore Studio Git workflow](https://musescore.org/en/developers-handbook/git-workflow)
+- [MuseScore Studio build documentation](https://github.com/musescore/MuseScore/wiki)
 
 ## License
 
-MuseScore Studio is licensed under GPL version 3.0. See [license file](https://github.com/musescore/MuseScore/blob/master/LICENSE.txt) in the same directory.
-
-## Packages
-
-See [Code Structure on Wiki](https://github.com/musescore/MuseScore/wiki/CodeStructure)
-
-## Building
-
-**Read the [Compilation section](https://github.com/musescore/MuseScore/wiki/Set-up-developer-environment) of the [MuseScore Wiki](https://github.com/musescore/MuseScore/wiki) for a complete build walkthrough and a list of dependencies.**
-
-### Getting sources
-
-If using git to download repo of entire code history, type:
-
-    git clone  --recurse-submodules https://github.com/musescore/MuseScore.git
-    cd MuseScore
-
-(The `--recurse-submodules` ensures that the [`muse_framework`](https://github.com/musescore/muse_framework) git submodule is checked out into the `muse/` subdirectory.)
-
-Otherwise, you can just download the latest source release tarball from the [Releases page](https://github.com/musescore/MuseScore/releases), and then from your download directory type:
-
-    tar xzf MuseScore-x.x.x.tar.gz
-    cd MuseScore-x.x.x
-
-### Release Build
-
-To compile MuseScore Studio for release, type:
-
-    cmake -P build.cmake -DCMAKE_BUILD_TYPE=Release
-
-On MacOS, append `-G Ninja` in order to use the `ninja` build tool (which you may need to install), since this
-is required to compile Swift components.
-
-If something goes wrong, append the word "clean" to the above command to delete the build subdirectory:
-
-    cmake -P build.cmake -DCMAKE_BUILD_TYPE=Release clean
-
-Then try running the first command again.
-
-### Running
-
-To start MuseScore Studio, type:
-
-    cmake -P build.cmake -DCMAKE_BUILD_TYPE=Release run
-
-Or run the compiled executable directly.
-
-### Debug Build
-
-A debug version can be built and run by replacing `-DCMAKE_BUILD_TYPE=Release`
-with `-DCMAKE_BUILD_TYPE=Debug` in the above commands.
-
-If you omit the `-DCMAKE_BUILD_TYPE` option entirely then `RelWithDebInfo` is
-used by default, as it provides a useful compromise between Release and Debug.
-
-### Testing
-
-See the [Unit tests section](https://github.com/musescore/MuseScore/wiki/Unit-tests) of the [MuseScore Studio Wiki](https://github.com/musescore/MuseScore/wiki) for instructions on how to run the test suite.
-
-### Code Formatting
-
-Run `./hooks/install.sh` to install a pre-commit hook that will format your staged files. Requires that you install `uncrustify`.
-
-If you have problems, please report them. To uninstall, run `./hooks/uninstall.sh`.
+Nzumari Studio is distributed under the GNU General Public License, version 3.0 (GPL-3.0), in accordance with the upstream MuseScore Studio codebase. See [LICENSE.txt](LICENSE.txt) for the license text and notices.
