@@ -1,5 +1,5 @@
 #include <QBuffer>
-#include <QCoreApplication>
+#include <QGuiApplication>
 #include <QDataStream>
 #include <QFile>
 #include <QImage>
@@ -8,7 +8,7 @@
 
 int main(int argc, char** argv)
 {
-    QCoreApplication app(argc, argv);
+    QGuiApplication app(argc, argv);
     if (argc != 3) {
         return 2;
     }
