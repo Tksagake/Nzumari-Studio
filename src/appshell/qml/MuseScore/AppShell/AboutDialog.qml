@@ -2,22 +2,14 @@
  * SPDX-License-Identifier: GPL-3.0-only
  * MuseScore-Studio-CLA-applies
  *
- * MuseScore Studio
- * Music Composition & Notation
+ * Nzumari Studio
  *
- * Copyright (C) 2021-2024 MuseScore Limited and others
+ * Copyright (C) 2021-2026 MuseScore Limited and others
+ * Nzumari Studio branding and integration
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
  * published by the Free Software Foundation.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
 import QtQuick
@@ -31,7 +23,7 @@ import MuseScore.AppShell
 StyledDialogView {
     id: root
 
-    title: qsTrc("appshell/about", "About MuseScore Studio")
+    title: qsTrc("appshell/about", "About Nzumari Studio")
 
     contentHeight: content.implicitHeight
     contentWidth: 400
@@ -46,28 +38,43 @@ StyledDialogView {
         id: content
 
         anchors.fill: parent
-        spacing: 32
+        spacing: 24
 
-        Image {
-            id: logo
+        RowLayout {
             Layout.alignment: Qt.AlignHCenter
+            spacing: 14
 
-            source: "resources/mu_logo.svg"
-            sourceSize: Qt.size(100, 100)
+            Image {
+                id: logo
+                Layout.preferredWidth: 76
+                Layout.preferredHeight: 76
 
-            MouseArea {
-                anchors.fill: parent
+                source: "resources/nzumari-icon.svg"
+                sourceSize: Qt.size(152, 152)
+                fillMode: Image.PreserveAspectFit
+            }
 
-                property int clickCount: 0
+            Column {
+                Layout.alignment: Qt.AlignVCenter
+                spacing: 2
 
-                onClicked: {
-                    clickCount++
+                StyledTextLabel {
+                    text: "Nzumari Studio"
+                    font: ui.theme.headerBoldFont
+                }
 
-                    if (clickCount % 3 == 0) {
-                        aboutModel.toggleDevMode()
-                    }
+                StyledTextLabel {
+                    text: qsTrc("appshell/about", "Compose · Preserve · Evolve · Distribute")
+                    font: ui.theme.bodyFont
+                    opacity: 0.72
                 }
             }
+        }
+
+        StyledTextLabel {
+            Layout.fillWidth: true
+            text: qsTrc("appshell/about", "A composition environment for writing, shaping and developing music. Nzumari Studio builds on the MuseScore Studio notation and engraving codebase.")
+            wrapMode: Text.WordWrap
         }
 
         Column {
@@ -76,7 +83,7 @@ StyledDialogView {
 
             StyledTextLabel {
                 anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTrc("appshell/about", "Version: %1").arg(aboutModel.museScoreVersion())
+                text: qsTrc("appshell/about", "Nzumari Studio version: %1").arg(aboutModel.museScoreVersion())
                 font: ui.theme.bodyBoldFont
             }
 
@@ -86,7 +93,7 @@ StyledDialogView {
 
                 StyledTextLabel {
                     anchors.verticalCenter: parent.verticalCenter
-                    text: qsTrc("appshell/about", "Revision: %1").arg(aboutModel.museScoreRevisionLink())
+                    text: qsTrc("appshell/about", "Upstream revision: %1").arg(aboutModel.museScoreRevisionLink())
                 }
 
                 FlatButton {
@@ -102,51 +109,21 @@ StyledDialogView {
 
         StyledTextLabel {
             Layout.fillWidth: true
-
-            text: qsTrc("appshell/about", "Build date: %1")
-                  .arg(aboutModel.museScoreBuildDateTime())
-
+            text: qsTrc("appshell/about", "Build date: %1").arg(aboutModel.museScoreBuildDateTime())
             wrapMode: Text.WordWrap
             maximumLineCount: 2
         }
 
         StyledTextLabel {
             Layout.fillWidth: true
-            text: {
-                let museScoreUrl = aboutModel.museScoreUrl()
-
-                //: %1 will be a link to the MuseScore website
-                let line1 = qsTrc("appshell/about", "Visit %1 for new versions and more information.")
-                            .arg(`<a href="${museScoreUrl.url}">${museScoreUrl.displayName}</a>`)
-
-                let line2 = qsTrc("appshell/about", "Get <a href=\"%1\">help</a> with the program or <a href=\"%2\">contribute</a> to its development.")
-                            .arg(aboutModel.museScoreForumUrl().url)
-                            .arg(aboutModel.museScoreContributionUrl().url)
-
-                return line1 + "<br>" + line2
-            }
+            text: qsTrc("appshell/about", "Nzumari Studio is an independent product. MuseScore Studio is developed by MuseScore Limited and contributors. This derivative work is published under the GNU General Public License version 3.")
             wrapMode: Text.WordWrap
-            maximumLineCount: 3
         }
 
         StyledTextLabel {
             Layout.fillWidth: true
-
-            text: qsTrc("appshell/about", "For privacy information, see our <a href=\"%1\">privacy policy</a>.")
-                  .arg(aboutModel.museScorePrivacyPolicyUrl().url)
-
+            text: qsTrc("appshell/about", "MuseScore Studio copyright © 1999–2026 MuseScore Limited and others. Nzumari Studio branding and integration are maintained separately.")
             wrapMode: Text.WordWrap
-            maximumLineCount: 3
-        }
-
-        StyledTextLabel {
-            Layout.fillWidth: true
-            text: qsTrc("appshell/about", "Copyright © 1999-2026 MuseScore Limited and others.\nPublished under the <a href=\"%1\">GNU General Public License version 3</a>.")
-                  .arg("https://www.gnu.org/licenses/gpl-3.0.html")
-                  .replace("\n", "<br>")
-
-            wrapMode: Text.WordWrap
-            maximumLineCount: 3
         }
     }
 }
