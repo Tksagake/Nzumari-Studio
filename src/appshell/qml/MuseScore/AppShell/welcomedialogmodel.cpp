@@ -29,52 +29,13 @@ using namespace mu::appshell;
 
 static std::vector<QVariantMap> welcomeDialogData()
 {
-    QVariantMap museSoundsPro;
-    museSoundsPro.insert("title", muse::qtrc("appshell/welcome", "Unlock Premium Playback"));
-    museSoundsPro.insert("imageUrl", "qrc:/resources/welcomedialog/MuseSoundsPro.png");
-    museSoundsPro.insert("description", muse::qtrc("appshell/welcome",
-                                                   "Hear your scores come to life with professionally recorded instrument libraries for expressive, realistic playback in MuseScore Studio."));
-    museSoundsPro.insert("buttonText", muse::qtrc("appshell/welcome", "Get MuseSounds Pro"));
-    museSoundsPro.insert("destinationUrl",
-                         "https://www.musehub.com/muse-sounds/musesounds-pro?utm_medium=Referral&utm_source=MSS&utm_campaign=MH_WW_REF_MSS_APP_ALL_040826_crosslink&utm_content=welcome_screen");
+    QVariantMap welcome;
+    welcome.insert("title", muse::qtrc("appshell/welcome", "Welcome to Nzumari Studio"));
+    welcome.insert("description", muse::qtrc("appshell/welcome",
+                                             "A desktop workspace for composing, arranging, engraving and preparing music. Open a score or start a new composition."));
+    welcome.insert("buttonText", muse::qtrc("appshell/welcome", "Start composing"));
 
-    QVariantMap whatsNew;
-    whatsNew.insert("title", muse::qtrc("appshell/welcome", "What’s new in MuseScore Studio"));
-    whatsNew.insert("imageUrl", "qrc:/resources/welcomedialog/WhatsNew.png");
-    whatsNew.insert("description", muse::qtrc("appshell/welcome",
-                                              "Includes essential new engraving tools, major improvements to playback, video export, dive notation for guitar, and features to speed up your workflow."));
-    whatsNew.insert("buttonText", muse::qtrc("appshell/welcome", "Watch video"));
-    whatsNew.insert("destinationUrl", "https://youtu.be/grKX-cBEEmM");
-
-    QVariantMap cloudStorage;
-    cloudStorage.insert("title", muse::qtrc("appshell/welcome", "Enjoy free cloud storage"));
-    cloudStorage.insert("imageUrl", "qrc:/resources/welcomedialog/MuseScoreCom.png");
-    cloudStorage.insert("description", muse::qtrc("appshell/welcome",
-                                                  "Save your scores privately on MuseScore.com to revisit past versions and invite others to view and comment – and when you’re ready, share your music with the world."));
-    cloudStorage.insert("buttonText", muse::qtrc("appshell/welcome", "View my scores online"));
-    cloudStorage.insert("destinationUrl",
-                        "https://musescore.com/my-scores?utm_source=mss-app-welcome-musescore-com&utm_medium=mss-app-welcome-musescore-com&utm_campaign=mss-app-welcome-musescore-com");
-
-    QVariantMap freeMuseSounds;
-    freeMuseSounds.insert("title", muse::qtrc("appshell/welcome", "Install our free MuseSounds libraries"));
-    freeMuseSounds.insert("imageUrl", "qrc:/resources/welcomedialog/MuseSounds.png");
-    freeMuseSounds.insert("description", muse::qtrc("appshell/welcome",
-                                                    "Explore our collection of realistic sample libraries, including solo instruments, marching percussion, and full orchestra - available for free on MuseHub."));
-    freeMuseSounds.insert("buttonText", muse::qtrc("appshell/welcome", "Get it on MuseHub"));
-    freeMuseSounds.insert("destinationUrl",
-                          "https://www.musehub.com/free-musesounds?utm_source=mss-app-welcome-free-musesounds&utm_medium=mss-app-welcome-free-musesounds&utm_campaign=mss-app-welcome-free-musesounds&utm_id=mss-app-welcome-free-musesounds");
-
-    QVariantMap exploreTutorials;
-    exploreTutorials.insert("title", muse::qtrc("appshell/welcome", "Explore our tutorials"));
-    exploreTutorials.insert("imageUrl", "qrc:/resources/welcomedialog/ExploreTutorials.png");
-    exploreTutorials.insert("description", muse::qtrc("appshell/welcome",
-                                                      "We’ve put together a playlist of tutorials to help both beginners and experienced users get the most out of MuseScore Studio."));
-    exploreTutorials.insert("buttonText", muse::qtrc("appshell/welcome", "View tutorials"));
-    exploreTutorials.insert("destinationUrl",
-                            "https://www.youtube.com/playlist?list=PLTYuWi2LmaPECOZrC6bkPHBkYY9_WEexT&utm_source=mss-app-welcome-tutorials&utm_medium=mss-app-welcome-tutorials&utm_campaign=mss-app-welcome-tutorials&utm_id=mss-app-welcome-tutorials");
-
-    //! NOTE: This is the order the above items will appear in the carousel
-    return { museSoundsPro, whatsNew, cloudStorage, freeMuseSounds, exploreTutorials };
+    return { welcome };
 }
 
 WelcomeDialogModel::WelcomeDialogModel()
