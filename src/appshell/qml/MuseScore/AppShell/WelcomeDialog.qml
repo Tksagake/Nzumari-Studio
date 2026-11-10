@@ -31,7 +31,7 @@ import MuseScore.AppShell
 StyledDialogView {
     id: root
 
-    title: qsTrc("appshell/welcome", "Welcome")
+    title: qsTrc("appshell/welcome", "Welcome to Nzumari Studio")
 
     contentHeight: contentColumn.height + footerArea.height
     contentWidth: 812
@@ -52,7 +52,7 @@ StyledDialogView {
     }
 
     function openCurrent() {
-        if (!model.currentItem) {
+        if (!model.currentItem || !model.currentItem.destinationUrl) {
             return
         }
         api.launcher.openUrl(model.currentItem.destinationUrl)
@@ -85,7 +85,8 @@ StyledDialogView {
         Row {
             id: imageAndArrowsRow
 
-            height: 322
+            visible: false
+            height: 0
             anchors {
                 left: contentColumn.left
                 right: contentColumn.right
@@ -210,14 +211,15 @@ StyledDialogView {
             navigation.accessible.description: prv.titleText + "; " + prv.descText
 
             onClicked: {
-                root.openCurrent()
+                root.accept()
             }
         }
 
         Item {
             id: indicatorArea
 
-            height: 60
+            visible: false
+            height: 0
             width: contentColumn.width
 
             PageIndicator {
